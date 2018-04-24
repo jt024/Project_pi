@@ -4,14 +4,22 @@
  * and open the template in the editor.
  */
 package presentation;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.security.*;
+import static java.security.MessageDigest.isEqual;
+
+
 /**
  *
  * @author jt024
  */
 public class main extends javax.swing.JFrame {
-
+    
+    public String pw = "";
     /**
      * Creates new form main
      */
@@ -29,14 +37,22 @@ public class main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        tfPW = new javax.swing.JTextField();
+        bnMatch = new javax.swing.JButton();
         lbIpAddress = new javax.swing.JLabel();
         bnTest = new javax.swing.JButton();
+        lbGotIt = new javax.swing.JLabel();
+        lbAttempts = new javax.swing.JLabel();
+        lbTime = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Match");
+        bnMatch.setText("Match");
+        bnMatch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bnMatchActionPerformed(evt);
+            }
+        });
 
         lbIpAddress.setText(" ");
 
@@ -47,19 +63,35 @@ public class main extends javax.swing.JFrame {
             }
         });
 
+        lbGotIt.setText(" ");
+
+        lbAttempts.setText(" ");
+
+        lbTime.setText(" ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbIpAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bnTest, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(tfPW, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(bnMatch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lbIpAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(bnTest, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(lbAttempts, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                                    .addComponent(lbGotIt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(lbTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -67,13 +99,19 @@ public class main extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
+                    .addComponent(tfPW)
                     .addComponent(lbIpAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(bnMatch)
                     .addComponent(bnTest))
-                .addContainerGap(240, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(lbGotIt, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbAttempts, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbTime, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         pack();
@@ -91,6 +129,90 @@ public class main extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_bnTestActionPerformed
+
+    private void bnMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnMatchActionPerformed
+        pw = tfPW.getText();
+        long startTime = System.currentTimeMillis();
+        String fileName = "src\\presentation\\Dictionary.txt";
+        
+        
+        
+        
+        System.out.println();
+        
+        String line = null;
+        int count =1;
+        try {
+//            byte[] bytesOfPw = pw.getBytes("UTF-8");
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(pw.getBytes());
+            byte[] thePW = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : thePW) {
+		sb.append(String.format("%02x", b & 0xff));
+            }
+            String pwHash = sb.toString();
+ 
+            
+            
+            FileReader fileReader =
+                new FileReader(fileName);
+            BufferedReader bufferedReader = 
+                new BufferedReader(fileReader);
+            while((line = bufferedReader.readLine()) != null) {
+                md = MessageDigest.getInstance("MD5");           
+                md.update(line.getBytes());
+                byte[] theLine = md.digest();
+                sb = new StringBuilder();
+            for (byte b : theLine) {
+		sb.append(String.format("%02x", b & 0xff));
+            }                
+            String lineHash = sb.toString();
+                
+                if (isEqual(thePW, theLine)) {
+                
+                    lbGotIt.setText("Got IT !!!");
+                    lbAttempts.setText("I looked at "+count+" words");
+                    long stopTime = System.currentTimeMillis();        
+                    lbTime.setText(Long.toString(stopTime-startTime)+ " nanoseconds");
+                    break;
+                }
+                System.out.println(lineHash);
+                System.out.println(pwHash);
+                count++;
+            }  
+        } catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file '" + 
+                fileName + "'");                
+        }
+        catch(IOException ex) {
+            System.out.println(
+                "Error reading file '" 
+                + fileName + "'");                  
+            // Or we could just do this: 
+            // ex.printStackTrace();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }            
+            
+//        try(Scanner scanner = new Scanner(file)) {
+//                        
+//            while (scanner.hasNextLine()) {
+//                if (scanner.nextLine()== pw) {
+//                    System.out.println("GOT IT !!");
+//                    break;
+//                }
+//          
+//            }
+//
+//            scanner.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } 
+
+        
+    }//GEN-LAST:event_bnMatchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,9 +250,12 @@ public class main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bnMatch;
     private javax.swing.JButton bnTest;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbAttempts;
+    private javax.swing.JLabel lbGotIt;
     private javax.swing.JLabel lbIpAddress;
+    private javax.swing.JLabel lbTime;
+    private javax.swing.JTextField tfPW;
     // End of variables declaration//GEN-END:variables
 }
