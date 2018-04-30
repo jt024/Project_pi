@@ -24,7 +24,6 @@ public class Connection {
     
     public static void connectSSH(String host) throws IOException, InterruptedException, AWTException{
         String s = "src\\putty\\putty.exe -ssh -l "+USERNAME+" -pw "+PASSWORD+" "+host+"";
-        mkDir();
         Runtime r = Runtime.getRuntime();
         Process p;
         try{
@@ -94,44 +93,8 @@ public class Connection {
     
     }
     
-    
-    public static void mkDir() throws AWTException, InterruptedException{
-                Robot robot = new Robot();
-		robot.keyPress(KeyEvent.VK_S);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_U);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_D);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_O);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_SPACE);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_M);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_K);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_D);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_I);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_R);
-		Thread.sleep(10);                
-		robot.keyPress(KeyEvent.VK_SPACE);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_T);
-		Thread.sleep(10);                
-		Thread.sleep(10);                
-		robot.keyPress(KeyEvent.VK_E);
-		Thread.sleep(10);
-		robot.keyPress(KeyEvent.VK_S);
-		Thread.sleep(10);                
-		robot.keyPress(KeyEvent.VK_T);
-		Thread.sleep(10);                
-		robot.keyPress(KeyEvent.VK_ENTER);
-		Thread.sleep(10);
-        
-    }
+ 
+   
     
     
     
