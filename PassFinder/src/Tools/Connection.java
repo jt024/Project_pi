@@ -6,8 +6,6 @@
 package Tools;
 
 import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.*;
 /**
@@ -23,7 +21,7 @@ public class Connection {
     // -ssh -l "+USERNAME+" -pw "+PASSWORD+" "+host+"
     
     public static void connectSSH(String host) throws IOException, InterruptedException, AWTException{
-        String s = "src\\putty\\putty.exe -ssh -l "+USERNAME+" -pw "+PASSWORD+" "+host+"";
+        String s = "putty\\putty.exe -ssh -l "+USERNAME+" -pw "+PASSWORD+" "+host+"";
         Runtime r = Runtime.getRuntime();
         Process p;
         try{
@@ -40,8 +38,8 @@ public class Connection {
     
     public static void sendFile(String host) throws InterruptedException, IOException{
         try {
-            String command = "src\\putty\\pscp.exe -ssh -l "+USERNAME+" -pw "+PASSWORD+" "+host+" "
-                    + "src\\presentation\\Dictionary.txt pi@retropie:/RetroPie/Dictionary.txt";
+            String command = "putty\\pscp.exe -ssh -l "+USERNAME+" -pw "+PASSWORD+" "+host+" "
+                    + "presentation\\Dictionary.txt pi@retropie:/RetroPie/Dictionary.txt";
             // plink [options] [user@]host [command]
             Runtime r = Runtime.getRuntime ();
             Process p = r.exec (command);
